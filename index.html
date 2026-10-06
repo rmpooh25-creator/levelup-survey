@@ -1,0 +1,28 @@
+<!-- 音声入力付きの入力欄部分（HTMLの一部） -->
+<label>具体的に嬉しかったこと・伝えたいメッセージ</label>
+<div style="display: flex; gap: 8px;">
+  <textarea id="peerComment" name="peerComment" rows="2" placeholder="例：〇〇の作業を助けてくれました！"></textarea>
+  <button type="button" onclick="startSpeech('peerComment')" style="width: auto; margin-top: 6px; padding: 0 12px; background: #10b981;">🎤</button>
+</div>
+
+<script>
+  // GASのデプロイURLをここに貼り付け
+  const GAS_URL = "ここに手順1でコピーしたURLを貼り付け";
+
+  // 音声入力の処理 (Web Speech API)
+  function startSpeech(targetId) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("お使いのブラウザは音声入力に対応していません。");
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'ja-JP';
+    recognition.onresult = function(event) {
+      const text = event.results[0][0].transcript;
+      const target = document.getElementById(targetId);
+      target.value += (target.value ? ' ' : '') + text;
+    };
+    recognition.start();
+  }
+</script>
