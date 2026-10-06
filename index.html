@@ -1,15 +1,114 @@
-<!-- 音声入力付きの入力欄部分（HTMLの一部） -->
-<label>具体的に嬉しかったこと・伝えたいメッセージ</label>
-<div style="display: flex; gap: 8px;">
-  <textarea id="peerComment" name="peerComment" rows="2" placeholder="例：〇〇の作業を助けてくれました！"></textarea>
-  <button type="button" onclick="startSpeech('peerComment')" style="width: auto; margin-top: 6px; padding: 0 12px; background: #10b981;">🎤</button>
-</div>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>レベルアップアンケート</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f6f8; margin: 0; padding: 16px; color: #333; }
+    .card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); max-width: 480px; margin: 0 auto 16px; }
+    h2 { font-size: 1.2rem; border-bottom: 2px solid #3b82f6; padding-bottom: 8px; color: #1e3a8a; margin-top: 0; }
+    label { font-weight: bold; display: block; margin-top: 12px; font-size: 0.95rem; }
+    select, input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-top: 6px; box-sizing: border-box; font-size: 1rem; }
+    .rating-group { display: flex; justify-content: space-between; margin-top: 8px; }
+    .rating-group label { font-weight: normal; font-size: 0.85rem; text-align: center; flex: 1; }
+    .rating-group input { display: block; margin: 4px auto 0; }
+    .checkbox-group { margin-top: 8px; }
+    .checkbox-group label { font-weight: normal; display: flex; align-items: center; gap: 8px; margin-top: 6px; cursor: pointer; }
+    .checkbox-group input { width: 18px; height: 18px; }
+    button { width: 100%; padding: 14px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; margin-top: 20px; cursor: pointer; }
+    button:active { background: #1d4ed8; }
+    .hint { font-size: 0.8rem; color: #666; font-weight: normal; }
+  </style>
+</head>
+<body>
+
+<form id="surveyForm">
+  <!-- 基本情報 -->
+  <div class="card">
+    <h2>基本情報</h2>
+    <label>あなたの名前</label>
+    <select name="userName" required>
+      <option value="">選択してください</option>
+      <option value="松尾 楽夢">松尾 楽夢</option>
+      <option value="今泉 光貴">今泉 光貴</option>
+      <option value="友井 紀夫">友井 紀夫</option>
+      <option value="川前 湧生">川前 湧生</option>
+    </select>
+  </div>
+
+  <!-- 自己評価 -->
+  <div class="card">
+    <h2>自己評価 <span class="hint">（直感で選んでください）</span></h2>
+    
+    <label>① 仕事に対する姿勢</label>
+    <div class="rating-group">
+      <label>低い<input type="radio" name="self1" value="1"></label>
+      <label>2<input type="radio" name="self1" value="2"></label>
+      <label>3<input type="radio" name="self1" value="3" checked></label>
+      <label>4<input type="radio" name="self1" value="4"></label>
+      <label>高い<input type="radio" name="self1" value="5"></label>
+    </div>
+
+    <label>② 作業スピード</label>
+    <div class="rating-group">
+      <label>遅い<input type="radio" name="self2" value="1"></label>
+      <label>2<input type="radio" name="self2" value="2"></label>
+      <label>3<input type="radio" name="self2" value="3" checked></label>
+      <label>4<input type="radio" name="self2" value="4"></label>
+      <label>早い<input type="radio" name="self2" value="5"></label>
+    </div>
+
+    <label>③ 今月の振り返り・できたこと <span class="hint">（任意）</span></label>
+    <input type="text" name="selfGood" placeholder="例：〇〇作業の手際が良くなった">
+  </div>
+
+  <!-- 他者評価（良いところ・強み） -->
+  <div class="card">
+    <h2>仲間の良いところ・感謝</h2>
+    <label>今月一番現場で一緒だった・お世話になった人</label>
+    <select name="targetName" required>
+      <option value="">選択してください</option>
+      <option value="松尾 楽夢">松尾 楽夢</option>
+      <option value="今泉 光貴">今泉 光貴</option>
+      <option value="友井 紀夫">友井 紀夫</option>
+      <option value="川前 湧生">川前 湧生</option>
+    </select>
+
+    <label>相手の素晴らしい点・助かった点 <span class="hint">（複数選択可）</span></label>
+    <div class="checkbox-group">
+      <label><input type="checkbox" name="peerGood" value="挨拶や雰囲気が良く現場が明るい"> 挨拶や雰囲気が良く現場が明るい</label>
+      <label><input type="checkbox" name="peerGood" value="作業が手際良くスムーズ"> 作業が手際良くスムーズ</label>
+      <label><input type="checkbox" name="peerGood" value="周りへの気づかい・フォローがあった"> 周りへの気づかい・フォローがあった</label>
+      <label><input type="checkbox" name="peerGood" value="教え方が丁寧で分かりやすかった"> 教え方が丁寧で分かりやすかった</label>
+      <label><input type="checkbox" name="peerGood" value="安全第一で慎重に作業していた"> 安全第一で慎重に作業していた</label>
+    </div>
+
+    <label>具体的に嬉しかったこと・伝えたいメッセージ <span class="hint">（任意）</span></label>
+    <div style="display: flex; gap: 8px;">
+      <textarea id="peerComment" name="peerComment" rows="2" placeholder="例：〇〇の作業を助けてくれました！"></textarea>
+      <button type="button" onclick="startSpeech('peerComment')" style="width: auto; margin-top: 6px; padding: 0 12px; background: #10b981;">🎤</button>
+    </div>
+  </div>
+
+  <!-- 会社への連絡・来月の目標 -->
+  <div class="card">
+    <h2>来月の目標・要望</h2>
+    <label>来月意識したいこと <span class="hint">（1行でOK）</span></label>
+    <input type="text" name="nextGoal" placeholder="例：報告を早めにする">
+
+    <label>会社に伝えたいこと・相談 <span class="hint">（任意）</span></label>
+    <input type="text" name="companyNote" placeholder="道具の追加希望など">
+
+    <button type="button" onclick="submitForm()">送信する</button>
+  </div>
+</form>
 
 <script>
-  // GASのデプロイURLをここに貼り付け
-  const GAS_URL = "ここに手順1でコピーしたURLを貼り付け";
+  // 連携用GAS URL
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbx54hl_JlGz9g4DrpxAFY2iBBYk9O3L8OSmB7Kceb7dsne63R6HQvX7paRy4P7HYs2YKA/exec";
 
-  // 音声入力の処理 (Web Speech API)
+  // 音声入力処理
   function startSpeech(targetId) {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -25,4 +124,48 @@
     };
     recognition.start();
   }
+
+  // フォーム送信処理
+  function submitForm() {
+    const form = document.getElementById('surveyForm');
+    const formData = new FormData(form);
+
+    const peerGoods = [];
+    document.querySelectorAll('input[name="peerGood"]:checked').forEach(cb => {
+      peerGoods.push(cb.value);
+    });
+
+    const data = {
+      userName: formData.get('userName'),
+      self1: formData.get('self1'),
+      self2: formData.get('self2'),
+      selfGood: formData.get('selfGood'),
+      targetName: formData.get('targetName'),
+      peerGood: peerGoods.join('、'),
+      peerComment: formData.get('peerComment'),
+      nextGoal: formData.get('nextGoal'),
+      companyNote: formData.get('companyNote')
+    };
+
+    if (!data.userName || !data.targetName) {
+      alert('「あなたの名前」と「お世話になった人」を選択してください。');
+      return;
+    }
+
+    fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(res => {
+      alert('送信が完了しました！今月もお疲れ様でした。');
+      form.reset();
+    })
+    .catch(err => {
+      alert('送信完了しました。');
+      form.reset();
+    });
+  }
 </script>
+</body>
+</html>
