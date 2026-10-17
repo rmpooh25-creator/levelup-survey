@@ -99,7 +99,7 @@
             <label><input type="radio" name="attitude" value="5"> 高い</label>
         </div>
 
-        <h2>② 作業スピード</h2>
+        <label>② 作業スピード</label>
         <div class="radio-group">
             <label><input type="radio" name="speed" value="1"> 遅い</label>
             <label><input type="radio" name="speed" value="2"> 2</label>
@@ -170,7 +170,8 @@
             request: document.getElementById('request').value
         };
 
-        const gasUrl = "https://script.google.com/macros/s/AKfycbzKXUmZRDUWB-18Mhxp0zvPt-UEP704qlO1JeYI_Se3zW1ip4Wied8dfZV68boUsqEN/exec";
+        // 正しいウェブアプリのURLを設定
+        const gasUrl = "https://script.google.com/macros/s/AKfycbzZu0-NN6MbQojwtXB40zJ2t-CIGX-PFQ1sZ6K7aWtKFZPhdjC3oEki5Vt46S_BnhRIoQ/exec";
 
         const submitBtn = e.target.querySelector('button[type="submit"]');
         submitBtn.disabled = true;
