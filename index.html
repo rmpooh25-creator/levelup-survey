@@ -46,15 +46,11 @@
             resize: vertical;
             height: 80px;
         }
-        .radio-group, .checkbox-group {
+        .radio-group {
             margin-top: 8px;
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
-        }
-        .checkbox-group {
-            flex-direction: column;
-            gap: 8px;
         }
         button {
             width: 100%;
@@ -121,27 +117,12 @@
         <label for="thisMonthGoal">⑥ 今月の目標</label>
         <input type="text" id="thisMonthGoal" name="thisMonthGoal" placeholder="例：報告を早めにする">
 
-        <h2>仲間の良いところ・感謝</h2>
-        <label for="colleague">今月一番現場で一緒だった・お世話になった人</label>
-        <select id="colleague" name="colleague">
-            <option value="">(選択してください)</option>
-            <option value="松尾 楽夢">松尾 楽夢</option>
-            <option value="今泉 光貴">今泉 光貴</option>
-            <option value="友井 紀夫">友井 紀夫</option>
-            <option value="川前 湧生">川前 湧生</option>
-        </select>
-
-        <label>相手の素晴らしい点・助かった点 （複数選択可）</label>
-        <div class="checkbox-group">
-            <label><input type="checkbox" name="praise" value="挨拶や雰囲気が良く現場が明るい"> 挨拶や雰囲気が良く現場が明るい</label>
-            <label><input type="checkbox" name="praise" value="作業が手際良くスムーズ"> 作業が手際良くスムーズ</label>
-            <label><input type="checkbox" name="praise" value="周りへの気づかい・フォローがあった"> 周りへの気づかい・フォローがあった</label>
-            <label><input type="checkbox" name="praise" value="教え方が丁寧で分かりやすかった"> 教え方が丁寧で分かりやすかった</label>
-            <label><input type="checkbox" name="praise" value="安全第一で慎重に作業していた"> 安全第一で慎重に作業していた</label>
-        </div>
-
-        <label for="message">具体的に嬉しかったこと・伝えたいメッセージ（任意）</label>
-        <textarea id="message" name="message" placeholder="例：〇〇の作業を助けてくれました！"></textarea>
+        <h2>メンバーへのフィードバック</h2>
+        <label for="everyoneGoodPoints">全員分のそれぞれの良かったところ</label>
+        <textarea id="everyoneGoodPoints" name="everyoneGoodPoints" placeholder="例：
+松尾さん：作業が丁寧で助かった
+今泉さん：動きが素早かった
+など、メンバーごとに記入"></textarea>
 
         <h2>要望・相談</h2>
         <label for="request">会社に伝えたいこと・相談（任意）</label>
@@ -152,7 +133,6 @@
 </div>
 
 <script>
-    // 送信処理のスクリプトをここに記述（Google Apps Script等の連携用コード）
     document.getElementById('surveyForm').addEventListener('submit', function(e) {
         e.preventDefault();
         alert('送信テスト完了（実際の送信先にあわせて調整してください）');
