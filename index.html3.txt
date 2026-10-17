@@ -99,7 +99,7 @@
             <label><input type="radio" name="attitude" value="5"> 高い</label>
         </div>
 
-        <label>② 作業スピード</label>
+        <h2>② 作業スピード</h2>
         <div class="radio-group">
             <label><input type="radio" name="speed" value="1"> 遅い</label>
             <label><input type="radio" name="speed" value="2"> 2</label>
@@ -152,16 +152,59 @@
 </div>
 
 <script>
+    document.getElementById('surveyForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = {
+            name: document.getElementById('name').value,
+            attitude: document.querySelector('input[name="attitude"]:checked')?.value || "",
+            speed: document.querySelector('input[name="speed"]:checked')?.value || "",
+            goodPoints: document.getElementById('goodPoints').value,
+            reflection: document.getElementById('reflection').value,
+            lastMonthReview: document.getElementById('lastMonthReview').value,
+            thisMonthGoal: document.getElementById('thisMonthGoal').value,
+            feedbackImaizumi: document.getElementById('feedbackImaizumi')?.value || "",
+            feedbackMatsuo: document.getElementById('feedbackMatsuo')?.value || "",
+            feedbackTomoi: document.getElementById('feedbackTomoi')?.value || "",
+            feedbackKawamae: document.getElementById('feedbackKawamae')?.value || "",
+            request: document.getElementById('request').value
+        };
+
+        const gasUrl = "https://script.google.com/macros/s/AKfycbzKXUmZRDUWB-18Mhxp0zvPt-UEP704qlO1JeYI_Se3zW1ip4Wied8dfZV68boUsqEN/exec";
+
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = "送信中...";
+
+        fetch(gasUrl, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(() => {
+            alert("アンケートを送信しました！");
+            document.getElementById('surveyForm').reset();
+            location.reload();
+        })
+        .catch(error => {
+            console.error("エラー:", error);
+            alert("送信に失敗しました。もう一度お試しください。");
+            submitBtn.disabled = false;
+            submitBtn.textContent = "送信する";
+        });
+    });
+
     function updateFeedbackFields() {
         const selectedName = document.getElementById('name').value;
 
-        // 一旦すべて表示する
         document.getElementById('wrap-imaizumi').style.display = 'block';
         document.getElementById('wrap-matsuo').style.display = 'block';
         document.getElementById('wrap-tomoi').style.display = 'block';
         document.getElementById('wrap-kawamae').style.display = 'block';
 
-        // 選択された人の欄を非表示にし、値もクリアする
         if (selectedName === '今泉 光貴') {
             document.getElementById('wrap-imaizumi').style.display = 'none';
             document.getElementById('feedbackImaizumi').value = '';
@@ -177,13 +220,7 @@
         }
     }
 
-    // ページ読み込み時にも実行
     window.onload = updateFeedbackFields;
-
-    document.getElementById('surveyForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('送信テスト完了（実際の送信先にあわせて調整してください）');
-    });
 </script>
 
 </body>
