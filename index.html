@@ -193,6 +193,9 @@
                 <label><input type="radio" name="fb_imaizumi_5" value="5"> 5</label>
                 <label><input type="radio" name="fb_imaizumi_5" value="評価できない"> 評価できない</label>
             </div>
+
+            <div class="feedback-question">⑥ 良かったところ・気になったところ・アドバイス</div>
+            <textarea id="fb_imaizumi_comment" name="fb_imaizumi_comment" placeholder="今月一緒に現場に入って感じたことなど"></textarea>
         </div>
 
         <!-- 松尾 楽夢 -->
@@ -248,6 +251,9 @@
                 <label><input type="radio" name="fb_matsuo_5" value="5"> 5</label>
                 <label><input type="radio" name="fb_matsuo_5" value="評価できない"> 評価できない</label>
             </div>
+
+            <div class="feedback-question">⑥ 良かったところ・気になったところ・アドバイス</div>
+            <textarea id="fb_matsuo_comment" name="fb_matsuo_comment" placeholder="今月一緒に現場に入って感じたことなど"></textarea>
         </div>
 
         <!-- 友井 紀夫 -->
@@ -303,6 +309,9 @@
                 <label><input type="radio" name="fb_tomoi_5" value="5"> 5</label>
                 <label><input type="radio" name="fb_tomoi_5" value="評価できない"> 評価できない</label>
             </div>
+
+            <div class="feedback-question">⑥ 良かったところ・気になったところ・アドバイス</div>
+            <textarea id="fb_tomoi_comment" name="fb_tomoi_comment" placeholder="今月一緒に現場に入って感じたことなど"></textarea>
         </div>
 
         <!-- 川前 湧生 -->
@@ -358,11 +367,15 @@
                 <label><input type="radio" name="fb_kawamae_5" value="5"> 5</label>
                 <label><input type="radio" name="fb_kawamae_5" value="評価できない"> 評価できない</label>
             </div>
+
+            <div class="feedback-question">⑥ 良かったところ・気になったところ・アドバイス</div>
+            <textarea id="fb_kawamae_comment" name="fb_kawamae_comment" placeholder="今月一緒に現場に入って感じたことなど"></textarea>
         </div>
 
         <h2>要望・相談</h2>
-        <label for="request">会社に伝えたいこと・相談（任意）</label>
-        <input type="text" id="request" name="request" placeholder="道具の追加希望など">
+        <label for="request">会社・社長・部長へ伝えたいこと・相談（任意）</label>
+        <p style="font-size: 0.85rem; color: #666; margin-top: 4px; margin-bottom: 6px;">現場の道具の追加希望や、経営層に直接伝えたい改善提案などがあればご記入ください。</p>
+        <input type="text" id="request" name="request" placeholder="例：〇〇の道具を追加してほしい / 新しい作業手順について相談したい">
 
         <button type="submit">送信する</button>
     </form>
@@ -387,6 +400,7 @@
             fb_imaizumi_3: document.querySelector('input[name="fb_imaizumi_3"]:checked')?.value || "",
             fb_imaizumi_4: document.querySelector('input[name="fb_imaizumi_4"]:checked')?.value || "",
             fb_imaizumi_5: document.querySelector('input[name="fb_imaizumi_5"]:checked')?.value || "",
+            fb_imaizumi_comment: document.getElementById('fb_imaizumi_comment').value,
 
             // 松尾さん
             fb_matsuo_1: document.querySelector('input[name="fb_matsuo_1"]:checked')?.value || "",
@@ -394,6 +408,7 @@
             fb_matsuo_3: document.querySelector('input[name="fb_matsuo_3"]:checked')?.value || "",
             fb_matsuo_4: document.querySelector('input[name="fb_matsuo_4"]:checked')?.value || "",
             fb_matsuo_5: document.querySelector('input[name="fb_matsuo_5"]:checked')?.value || "",
+            fb_matsuo_comment: document.getElementById('fb_matsuo_comment').value,
 
             // 友井さん
             fb_tomoi_1: document.querySelector('input[name="fb_tomoi_1"]:checked')?.value || "",
@@ -401,6 +416,7 @@
             fb_tomoi_3: document.querySelector('input[name="fb_tomoi_3"]:checked')?.value || "",
             fb_tomoi_4: document.querySelector('input[name="fb_tomoi_4"]:checked')?.value || "",
             fb_tomoi_5: document.querySelector('input[name="fb_tomoi_5"]:checked')?.value || "",
+            fb_tomoi_comment: document.getElementById('fb_tomoi_comment').value,
 
             // 川前さん
             fb_kawamae_1: document.querySelector('input[name="fb_kawamae_1"]:checked')?.value || "",
@@ -408,6 +424,7 @@
             fb_kawamae_3: document.querySelector('input[name="fb_kawamae_3"]:checked')?.value || "",
             fb_kawamae_4: document.querySelector('input[name="fb_kawamae_4"]:checked')?.value || "",
             fb_kawamae_5: document.querySelector('input[name="fb_kawamae_5"]:checked')?.value || "",
+            fb_kawamae_comment: document.getElementById('fb_kawamae_comment').value,
 
             request: document.getElementById('request').value
         };
@@ -471,6 +488,7 @@
                 r.checked = (idx === 2); // 3（真ん中）をデフォルトに
             });
         }
+        document.getElementById(`fb_${nameKey}_comment`).value = "";
     }
 
     window.onload = updateFeedbackFields;
