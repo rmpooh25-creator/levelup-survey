@@ -44,7 +44,7 @@
             <textarea name="thisMonthGoal"></textarea>
         </div>
 
-        <!-- 各メンバーごとの評価欄（必要に応じて追加・調整してください） -->
+        <!-- 今泉さん -->
         <div class="form-group">
             <h3>今泉 光貴の評価</h3>
             <label>姿勢</label><input type="number" name="fb_imaizumi_1" min="1" max="5">
@@ -55,6 +55,7 @@
             <label>良かったところ等（コメント）</label><textarea name="fb_imaizumi_comment"></textarea>
         </div>
 
+        <!-- 松尾さん -->
         <div class="form-group">
             <h3>松尾 楽夢の評価</h3>
             <label>姿勢</label><input type="number" name="fb_matsuo_1" min="1" max="5">
@@ -65,6 +66,7 @@
             <label>良かったところ等（コメント）</label><textarea name="fb_matsuo_comment"></textarea>
         </div>
 
+        <!-- 友井さん -->
         <div class="form-group">
             <h3>友井 紀夫の評価</h3>
             <label>姿勢</label><input type="number" name="fb_tomoi_1" min="1" max="5">
@@ -75,6 +77,7 @@
             <label>良かったところ等（コメント）</label><textarea name="fb_tomoi_comment"></textarea>
         </div>
 
+        <!-- 川前さん -->
         <div class="form-group">
             <h3>川前 湧生の評価</h3>
             <label>姿勢</label><input type="number" name="fb_kawamae_1" min="1" max="5">
@@ -86,7 +89,7 @@
         </div>
 
         <div class="form-group">
-            <label>全体への要望・相談</label>
+            <h3>全体への要望・相談</h3>
             <textarea name="request"></textarea>
         </div>
 
@@ -95,8 +98,8 @@
     </form>
 
     <script>
-        // ★ここにGoogle Apps Script（GAS）でデプロイした「ウェブアプリのURL」を貼り付けてください
-        const GAS_URL = "ここにGASのウェブアプリのURLを貼り付けてください";
+        // 設定済みのGASウェブアプリURL
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbykl9RoZ6hbdkuKu1txPFDvh3t3lmR4LKHLjoK-LuBFfWsMpzV5W99G5hIZ9G4RXYGizQ/exec";
 
         document.getElementById('surveyForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -113,7 +116,7 @@
 
             fetch(GAS_URL, {
                 method: 'POST',
-                mode: 'no-cors', // GASとの通信エラーを防ぐため
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             })
