@@ -1,35 +1,135 @@
-// ブラウザなどでURLに直接アクセスした際のエラーを防ぐための関数
-function doGet(e) {
-  return ContentService.createTextOutput("GAS is running successfully.");
-}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>レベルアップアンケート</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; background: #f9f9f9; }
+        .form-group { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], textarea, select { width: 100%; padding: 8px; box-sizing: border-box; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        textarea { height: 80px; }
+        button { background: #007bff; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 4px; cursor: pointer; width: 100%; }
+        button:hover { background: #0056b3; }
+        #loading { display: none; text-align: center; font-weight: bold; color: #007bff; margin-top: 10px; }
+    </style>
+</head>
+<body>
 
-// フォームからデータを受け取ってスプレッドシートに追加する関数
-function doPost(e) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var data = JSON.parse(e.postData.contents);
-  
-  sheet.appendRow([
-    new Date(), // 送信日時
-    data.name,
-    data.attitude,
-    data.speed,
-    data.goodPoints,
-    data.reflection,
-    data.lastMonthReview,
-    data.thisMonthGoal,
+    <h2>レベルアップアンケート</h2>
     
-    // 今泉さん (1〜5)
-    data.fb_imaizumi_1 || "", data.fb_imaizumi_2 || "", data.fb_imaizumi_3 || "", data.fb_imaizumi_4 || "", data.fb_imaizumi_5 || "",
-    // 松尾さん (1〜5)
-    data.fb_matsuo_1 || "", data.fb_matsuo_2 || "", data.fb_matsuo_3 || "", data.fb_matsuo_4 || "", data.fb_matsuo_5 || "",
-    // 友井さん (1〜5)
-    data.fb_tomoi_1 || "", data.fb_tomoi_2 || "", data.fb_tomoi_3 || "", data.fb_tomoi_4 || "", data.fb_tomoi_5 || "",
-    // 川前さん (1〜5)
-    data.fb_kawamae_1 || "", data.fb_kawamae_2 || "", data.fb_kawamae_3 || "", data.fb_kawamae_4 || "", data.fb_kawamae_5 || "",
-    
-    data.request || ""
-  ]);
-  
-  return ContentService.createTextOutput(JSON.stringify({"result": "success"}))
-                .setMimeType(ContentService.MimeType.JSON);
-}
+    <form id="surveyForm">
+        <!-- 自身の基本情報 -->
+        <div class="form-group">
+            <label>氏名</label>
+            <input type="text" name="name" required>
+            
+            <label>仕事に対する姿勢（自己評価 1〜5）</label>
+            <input type="number" name="attitude" min="1" max="5" required>
+            
+            <label>作業スピード（自己評価 1〜5）</label>
+            <input type="number" name="speed" min="1" max="5" required>
+            
+            <label>良かったところ</label>
+            <textarea name="goodPoints"></textarea>
+            
+            <label>反省点</label>
+            <textarea name="reflection"></textarea>
+            
+            <label>先月の目標の振り返り</label>
+            <textarea name="lastMonthReview"></textarea>
+            
+            <label>今月の目標</label>
+            <textarea name="thisMonthGoal"></textarea>
+        </div>
+
+        <!-- 各メンバーごとの評価欄（必要に応じて追加・調整してください） -->
+        <div class="form-group">
+            <h3>今泉 光貴の評価</h3>
+            <label>姿勢</label><input type="number" name="fb_imaizumi_1" min="1" max="5">
+            <label>技術力</label><input type="number" name="fb_imaizumi_2" min="1" max="5">
+            <label>スピード</label><input type="number" name="fb_imaizumi_3" min="1" max="5">
+            <label>態度</label><input type="number" name="fb_imaizumi_4" min="1" max="5">
+            <label>注意力</label><input type="number" name="fb_imaizumi_5" min="1" max="5">
+            <label>良かったところ等（コメント）</label><textarea name="fb_imaizumi_comment"></textarea>
+        </div>
+
+        <div class="form-group">
+            <h3>松尾 楽夢の評価</h3>
+            <label>姿勢</label><input type="number" name="fb_matsuo_1" min="1" max="5">
+            <label>技術力</label><input type="number" name="fb_matsuo_2" min="1" max="5">
+            <label>スピード</label><input type="number" name="fb_matsuo_3" min="1" max="5">
+            <label>態度</label><input type="number" name="fb_matsuo_4" min="1" max="5">
+            <label>注意力</label><input type="number" name="fb_matsuo_5" min="1" max="5">
+            <label>良かったところ等（コメント）</label><textarea name="fb_matsuo_comment"></textarea>
+        </div>
+
+        <div class="form-group">
+            <h3>友井 紀夫の評価</h3>
+            <label>姿勢</label><input type="number" name="fb_tomoi_1" min="1" max="5">
+            <label>技術力</label><input type="number" name="fb_tomoi_2" min="1" max="5">
+            <label>スピード</label><input type="number" name="fb_tomoi_3" min="1" max="5">
+            <label>態度</label><input type="number" name="fb_tomoi_4" min="1" max="5">
+            <label>注意力</label><input type="number" name="fb_tomoi_5" min="1" max="5">
+            <label>良かったところ等（コメント）</label><textarea name="fb_tomoi_comment"></textarea>
+        </div>
+
+        <div class="form-group">
+            <h3>川前 湧生の評価</h3>
+            <label>姿勢</label><input type="number" name="fb_kawamae_1" min="1" max="5">
+            <label>技術力</label><input type="number" name="fb_kawamae_2" min="1" max="5">
+            <label>スピード</label><input type="number" name="fb_kawamae_3" min="1" max="5">
+            <label>態度</label><input type="number" name="fb_kawamae_4" min="1" max="5">
+            <label>注意力</label><input type="number" name="fb_kawamae_5" min="1" max="5">
+            <label>良かったところ等（コメント）</label><textarea name="fb_kawamae_comment"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>全体への要望・相談</label>
+            <textarea name="request"></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn">送信する</button>
+        <div id="loading">送信中...しばらくお待ちください</div>
+    </form>
+
+    <script>
+        // ★ここにGoogle Apps Script（GAS）でデプロイした「ウェブアプリのURL」を貼り付けてください
+        const GAS_URL = "ここにGASのウェブアプリのURLを貼り付けてください";
+
+        document.getElementById('surveyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            
+            submitBtn.style.display = 'none';
+            loading.style.display = 'block';
+
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => { data[key] = value; });
+
+            fetch(GAS_URL, {
+                method: 'POST',
+                mode: 'no-cors', // GASとの通信エラーを防ぐため
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                alert('アンケートの送信が完了しました！ご協力ありがとうございます。');
+                document.getElementById('surveyForm').reset();
+                submitBtn.style.display = 'block';
+                loading.style.display = 'none';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('送信に失敗しました。もう一度お試しください。');
+                submitBtn.style.display = 'block';
+                loading.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
