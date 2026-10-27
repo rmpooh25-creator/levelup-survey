@@ -138,7 +138,7 @@
         <input type="text" id="thisMonthGoal" name="thisMonthGoal" placeholder="例：報告を早めにする">
 
         <h2>メンバーへのフィードバック</h2>
-        <p style="font-size: 0.85rem; color: #666; margin-top: 4px;">※良かったところや気になったところ、アドバイスなどを評価してください（評価しない項目は未選択のままで構いません）</p>
+        <p style="font-size: 0.85rem; color: #666; margin-top: 4px;">※良かったところや気になったところ、アドバイスなどを評価してください（現場が一緒ではないので評価ができない場合は「評価ができない」を押してください）</p>
         
         <!-- 今泉 光貴 -->
         <div class="feedback-member-block" id="wrap-imaizumi">
@@ -434,13 +434,11 @@
     function updateFeedbackFields() {
         const selectedName = document.getElementById('name').value;
 
-        // すべてのメンバーブロックを表示状態にする
         document.getElementById('wrap-imaizumi').style.display = 'block';
         document.getElementById('wrap-matsuo').style.display = 'block';
         document.getElementById('wrap-tomoi').style.display = 'block';
         document.getElementById('wrap-kawamae').style.display = 'block';
 
-        // 選択された自分の名前の欄を非表示にし、中のラジオボタンのチェックとコメントを完全にクリアする
         if (selectedName === '今泉 光貴') {
             document.getElementById('wrap-imaizumi').style.display = 'none';
             clearBlockInputs('imaizumi');
@@ -456,7 +454,6 @@
         }
     }
 
-    // 自分の欄が隠されたときに、裏側のデータが送信されないようチェックをすべて外し、コメントを空にする関数
     function clearBlockInputs(nameKey) {
         for (let i = 1; i <= 5; i++) {
             const radios = document.querySelectorAll(`input[name="fb_${nameKey}_${i}"]`);
